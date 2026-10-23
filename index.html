@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#071426">
+<title>Q-Rescue Intelligence | Emergency Management</title>
+
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#071426;color:#eef6ff}
+header{padding:24px 16px;background:linear-gradient(120deg,#123d5b,#071426);border-bottom:1px solid #29445f}
+header h1{margin:0;font-size:25px}
+header p,.small{color:#a9c1d8;font-size:13px;line-height:1.6}
+.tag{display:inline-block;padding:6px 10px;background:#173b4d;color:#50e6d0;border-radius:20px;font-size:11px}
+nav{display:flex;gap:8px;overflow-x:auto;padding:12px;background:#09182a;position:sticky;top:0;z-index:5}
+nav a{text-decoration:none;color:white;background:#17304b;padding:10px;border-radius:8px;font-size:12px;white-space:nowrap}
+main{padding:15px;max-width:1000px;margin:auto}
+section{margin-bottom:22px;scroll-margin-top:70px}
+h2{font-size:19px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.card{background:#10243b;border:1px solid #29445f;border-radius:13px;padding:14px;margin-bottom:12px;min-width:0}
+.label{font-size:12px;color:#a9c1d8}
+.number{font-size:27px;font-weight:bold;margin-top:5px;overflow-wrap:anywhere}
+input,select,textarea,button{width:100%;padding:12px;margin:6px 0;border-radius:8px;border:1px solid #29445f;background:#08192b;color:white;font-size:14px}
+button{background:#173d59;font-weight:bold;cursor:pointer}
+button.primary{background:#42e0cd;color:#05212b;border:0}
+.node{padding:12px;background:#0a1b2d;border-radius:9px;margin:7px 0;border:1px solid #29445f;overflow-wrap:anywhere;white-space:pre-wrap}
+.green{color:#54e6a5}.red{color:#ff7180}.orange{color:#ffc16d}
+#messages p,#events p{background:#0a1b2d;padding:10px;border-radius:8px;overflow-wrap:anywhere;white-space:pre-wrap}
+footer{text-align:center;color:#9eb2ca;font-size:12px;padding:22px}
+@media(min-width:700px){
+.grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+.layout{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+}
+</style>
+</head>
+
+<body>
+<header>
+<h1>⚛ Q-RESCUE INTELLIGENCE</h1>
+<p>Intelligent Emergency Communication and Route Optimization</p>
+<span class="tag">EMERGENCY MANAGEMENT SYSTEM</span>
+</header>
+
+<nav>
+<a href="#dashboard">Dashboard</a>
+<a href="#network">Network</a>
+<a href="#disaster">Disaster</a>
+<a href="#emergency">Messages</a>
+<a href="#optimizer">Find Best Route</a>
+<a href="#quantum">Quantum Results</a>
+<a href="#api">System Status</a>
+</nav>
+
+<main>
+<section id="dashboard">
+<h2>Emergency Dashboard</h2>
+<div class="grid">
+<div class="card"><div class="label">Messages Created</div><div class="number" id="total">0</div></div>
+<div class="card"><div class="label">Delivered in Simulation</div><div class="number green" id="delivered">0</div></div>
+<div class="card"><div class="label">Active Connections</div><div class="number" id="active">8</div></div>
+<div class="card"><div class="label">Network Health</div><div class="number" id="health">100%</div></div>
+</div>
+<div class="card">
+<strong>System status:</strong>
+<span id="systemStatus" class="orange">Checking browser system...</span>
+<p class="small">API availability can be checked in the System Status section.</p>
+</div>
+</section>
+
+<section id="network">
+<h2>Communication Network</h2>
+<div class="layout">
+<div class="card"><h3>Network Nodes</h3><div id="nodes"></div></div>
+<div class="card">
+<h3>Connection Status</h3>
+<div id="connections"></div>
+<button onclick="breakConnection()">Simulate Connection Failure</button>
+<button onclick="restoreNetwork()">Restore Network</button>
+</div>
+</div>
+</section>
+
+<section id="disaster">
+<h2>Disaster Management</h2>
+<div class="card">
+<label>Select disaster</label>
+<select id="disasterType">
+<option>Flood</option><option>Earthquake</option>
+<option>Landslide</option><option>Cyclone</option>
+</select>
+<label>Severity</label>
+<select id="severity">
+<option value="1">Low</option>
+<option value="2">Moderate</option>
+<option value="3">Severe</option>
+</select>
+<button class="primary" onclick="simulateDisaster()">Run Disaster Simulation</button>
+<div id="disasterResult" class="node">Select a disaster and run the simulation.</div>
+</div>
+</section>
+
+<section id="emergency">
+<h2>Emergency Message Centre</h2>
+<div class="layout">
+<div class="card">
+<label>Emergency message</label>
+<textarea id="messageText" rows="3" placeholder="Describe the emergency and assistance required"></textarea>
+<label>Source</label>
+<select id="source">
+<option>Hospital</option><option>Control Centre</option>
+<option>Rescue Team</option><option>Affected Village</option>
+<option>Relief Shelter</option>
+</select>
+<label>Destination</label>
+<select id="destination">
+<option>Rescue Team</option><option>Hospital</option>
+<option>Control Centre</option><option>Affected Village</option>
+<option>Relief Shelter</option>
+</select>
+<label>Priority</label>
+<select id="priority">
+<option>Critical</option><option>High</option>
+<option>Medium</option><option>Low</option>
+</select>
+<button class="primary" onclick="sendMessage()">Process Emergency Message</button>
+<p class="small">Messages are processed by this website and saved in this browser. This does not contact emergency services.</p>
+</div>
+<div class="card">
+<h3>Priority Message History</h3>
+<button onclick="clearMessages()">Clear Message History</button>
+<div id="messages"></div>
+</div>
+</div>
+</section>
+
+<section id="optimizer">
+<h2>Intelligent Route Optimizer</h2>
+<div class="card">
+<p class="small">Calculate a minimum-cost route using the currently active network connections.</p>
+<label>Start location</label>
+<select id="routeStart"></select>
+<label>Destination</label>
+<select id="routeEnd"></select>
+<button class="primary" onclick="findLocalRoute()">Find Best Route</button>
+<div id="routeResult" class="node">Choose locations to calculate a route.</div>
+</div>
+</section>
+
+<section id="quantum">
+<h2>⚛ Quantum Optimization Results</h2>
+<div class="card">
+<p class="small">Enter the actual objective costs recorded by your QAOA and classical experiments in Google Colab.</p>
+<label>Classical minimum cost</label>
+<input type="number" id="classicalCost" value="6" min="0" step="any">
+<label>QAOA objective cost</label>
+<input type="number" id="qaoaCost" value="6" min="0" step="any">
+<button class="primary" onclick="compareQuantum()">Compare Results</button>
+<div id="quantumResult" class="node">Enter and compare your experiment results.</div>
+<p class="small">Matching objective costs do not demonstrate quantum speedup. This comparison is separate from the website's route-finding algorithm.</p>
+</div>
+</section>
+
+<section id="api">
+<h2>Backend System Status</h2>
+<div class="card">
+<p class="small">Check connectivity to your FastAPI backend.</p>
+<button class="primary" onclick="testQRescueAPI()">Check API Connection</button>
+<div id="apiResult" class="node">API connection has not been checked.</div>
+<button onclick="findEmergencyRoute()">Get Backend Route</button>
+<div id="apiRouteResult" class="node">Backend route results will appear here.</div>
+</div>
+</section>
+
+<section>
+<h2>System Activity</h2>
+<div class="card" id="events"></div>
+</section>
+</main>
+
+<footer>
+Q-Rescue Intelligence | Emergency Communication and Route Optimization
+<br>Development system — verify and validate before any real emergency use.
+</footer>
+
+<script>
+// IMPORTANT: Keep your CURRENT working ngrok URL here.
+const API_URL = "https://headroom-omit-footsore.ngrok-free.dev";
+
+const names = [
+"Hospital","Control Centre","Rescue Team",
+"Affected Village","Relief Shelter"
+];
+
+const originalLinks = [
+["Hospital","Control Centre",2],
+["Control Centre","Rescue Team",2],
+["Rescue Team","Affected Village",3],
+["Affected Village","Relief Shelter",2],
+["Hospital","Rescue Team",5],
+["Control Centre","Affected Village",4],
+["Rescue Team","Relief Shelter",4],
+["Hospital","Relief Shelter",8]
+];
+
+let links = [];
+let messages = [];
+let events = [];
+
+function loadData(){
+try {
+messages = JSON.parse(localStorage.getItem("qr_messages") || "[]");
+events = JSON.parse(localStorage.getItem("qr_events") || "[]");
+const savedLinks = JSON.parse(localStorage.getItem("qr_links") || "null");
+if(savedLinks && Array.isArray(savedLinks) && savedLinks.length === originalLinks.length){
+links = savedLinks;
+} else {
+resetLinks(false);
+}
+} catch(e) {
+messages = [];
+events = [];
+resetLinks(false);
+}
+}
+
+function saveData(){
+try {
+localStorage.setItem("qr_messages", JSON.stringify(messages));
+localStorage.setItem("qr_events", JSON.stringify(events.slice(0,50)));
+localStorage.setItem("qr_links", JSON.stringify(links));
+} catch(e) {
+console.warn("Browser storage unavailable",e);
+}
+}
+
+function resetLinks(save=true){
+links = originalLinks.map((l,i)=>({
+id:i,a:l[0],b:l[1],cost:l[2],failed:false
+}));
+if(save) saveData();
+}
+
+function addEvent(text){
+events.unshift(new Date().toLocaleTimeString()+" — "+text);
+events = events.slice(0,50);
+renderEvents();
+saveData();
+}
+
+function renderEvents(){
+const box=document.getElementById("events");
+box.innerHTML="";
+if(!events.length){
+box.textContent="System initialized.";
+return;
+}
+events.forEach(text=>{
+const p=document.createElement("p");
+p.textContent=text;
+box.appendChild(p);
+});
+}
+
+function renderNodes(){
+document.getElementById("nodes").innerHTML=names.map(name=>{
+const count=links.filter(l=>(l.a===name||l.b===name)&&!l.failed).length;
+return `<div class="node"><strong>${name}</strong><div class="small">${count} active connections</div></div>`;
+}).join("");
+}
+
+function renderConnections(){
+document.getElementById("connections").innerHTML=links.map(l=>
+`<div class="node">${l.a} ↔ ${l.b}<br>${l.failed?'<span class="red">FAILED</span>':'<span class="green">ONLINE</span>'} <span class="small">| Cost: ${l.cost}</span></div>`
+).join("");
+}
+
+function updateDashboard(){
+document.getElementById("total").textContent=messages.length;
+document.getElementById("delivered").textContent=messages.filter(m=>m.delivered).length;
+const active=links.filter(l=>!l.failed).length;
+document.getElementById("active").textContent=active;
+document.getElementById("health").textContent=Math.round(active/links.length*100)+"%";
+renderNodes();
+renderConnections();
+renderMessages();
+saveData();
+}
+
+function breakConnection(){
+const available=links.filter(l=>!l.failed);
+if(!available.length){
+addEvent("No active connections remain.");
+return;
+}
+const link=available[Math.floor(Math.random()*available.length)];
+link.failed=true;
+addEvent("Connection marked failed: "+link.a+" ↔ "+link.b);
+updateDashboard();
+}
+
+function restoreNetwork(){
+resetLinks(false);
+addEvent("Network connections restored.");
+updateDashboard();
+}
+
+function simulateDisaster(){
+const type=document.getElementById("disasterType").value;
+const severity=Number(document.getElementById("severity").value);
+const available=links.filter(l=>!l.failed);
+const count=Math.min(available.length,severity*2);
+for(let i=available.length-1;i>0;i--){
+const j=Math.floor(Math.random()*(i+1));
+[available[i],available[j]]=[available[j],available[i]];
+}
+available.slice(0,count).forEach(l=>l.failed=true);
+document.getElementById("disasterResult").textContent=
+type+" scenario completed. "+count+
+" connections marked unavailable in the network model.";
+addEvent(type+" scenario run at severity "+severity+".");
+updateDashboard();
+}
+
+function findPath(start,end){
+const dist={},previous={},visited=new Set();
+names.forEach(n=>dist[n]=Infinity);
+dist[start]=0;
+
+while(visited.size<names.length){
+let current=null,best=Infinity;
+names.forEach(n=>{
+if(!visited.has(n)&&dist[n]<best){
+current=n;best=dist[n];
+}
+});
+if(current===null)break;
+if(current===end)break;
+visited.add(current);
+
+links.filter(l=>!l.failed&&(l.a===current||l.b===current)).forEach(l=>{
+const next=l.a===current?l.b:l.a;
+const alt=dist[current]+l.cost;
+if(alt<dist[next]){
+dist[next]=alt;
+previous[next]=current;
+}
+});
+}
+
+if(!Number.isFinite(dist[end]))return null;
+const path=[];
+let current=end;
+while(current){
+path.unshift(current);
+if(current===start)break;
+current=previous[current];
+}
+return path[0]===start?{path,cost:dist[end]}:null;
+}
+
+function findLocalRoute(){
+const start=document.getElementById("routeStart").value;
+const end=document.getElementById("routeEnd").value;
+const box=document.getElementById("routeResult");
+
+if(start===end){
+box.textContent="Choose different start and destination locations.";
+return;
+}
+
+const result=findPath(start,end);
+if(!result){
+box.textContent="No available route. Restore the network or select different locations.";
+addEvent("No route available from "+start+" to "+end+".");
+} else {
+box.textContent="Best route:\n"+result.path.join(" → ")+
+"\nTotal route cost: "+result.cost;
+addEvent("Best route calculated from "+start+" to "+end+".");
+}
+}
+
+function renderMessages(){
+const el=document.getElementById("messages");
+el.innerHTML="";
+if(!messages.length){
+el.textContent="No messages created yet.";
+return;
+}
+messages.forEach(m=>{
+const p=document.createElement("p");
+p.textContent="["+m.priority+"] "+m.source+" → "+m.destination+
+"\n"+m.text+"\nStatus: "+m.status+
+"\nRoute: "+m.route+
+"\n"+m.time;
+el.appendChild(p);
+});
+}
+
+function sendMessage(){
+const text=document.getElementById("messageText").value.trim();
+const source=document.getElementById("source").value;
+const destination=document.getElementById("destination").value;
+const priority=document.getElementById("priority").value;
+
+if(!text){
+alert("Please enter an emergency message.");
+return;
+}
+if(source===destination){
+alert("Choose a different destination.");
+return;
+}
+
+const result=findPath(source,destination);
+const delivered=Boolean(result);
+const message={
+id:Date.now(),
+text,source,destination,priority,
+delivered,
+status:result?"Route available in network model":"No route available",
+route:result?result.path.join(" → "):"Unavailable",
+time:new Date().toLocaleString()
+};
+
+messages.unshift(message);
+const order={Critical:1,High:2,Medium:3,Low:4};
+messages.sort((a,b)=>order[a.priority]-order[b.priority]);
+document.getElementById("messageText").value="";
+addEvent(priority+" priority message processed.");
+updateDashboard();
+}
+
+function clearMessages(){
+if(!confirm("Delete all saved emergency messages from this browser?"))return;
+messages=[];
+addEvent("Emergency message history cleared.");
+updateDashboard();
+}
+
+function compareQuantum(){
+const c=document.getElementById("classicalCost").value;
+const q=document.getElementById("qaoaCost").value;
+const box=document.getElementById("quantumResult");
+
+if(c===""||q===""||Number(c)<0||Number(q)<0||
+!Number.isFinite(Number(c))||!Number.isFinite(Number(q))){
+box.textContent="Enter valid non-negative objective costs.";
+return;
+}
+
+const classical=Number(c),qaoa=Number(q);
+if(qaoa===classical){
+box.textContent="Both recorded objective costs are "+classical+
+". This result does not establish quantum speedup.";
+} else if(qaoa<classical){
+box.textContent="QAOA objective cost: "+qaoa+
+". Classical objective cost: "+classical+
+". Verify both use the same objective and constraints.";
+} else {
+box.textContent="Classical objective cost: "+classical+
+". QAOA objective cost: "+qaoa+
+". The recorded QAOA result is higher in this experiment.";
+}
+addEvent("Classical and QAOA results compared.");
+}
+
+function getApiUrl(){
+return API_URL.trim().replace(/\/+$/,"");
+}
+
+async function testQRescueAPI(){
+const box=document.getElementById("apiResult");
+const url=getApiUrl();
+box.textContent="Connecting to backend...";
+
+try{
+const response=await fetch(url,{
+headers:{"ngrok-skip-browser-warning":"true"}
+});
+if(!response.ok)throw new Error("HTTP "+response.status);
+const data=await response.json();
+box.textContent="Backend connected.\n"+JSON.stringify(data,null,2);
+document.getElementById("systemStatus").textContent="Browser system ready; API online";
+document.getElementById("systemStatus").className="green";
+addEvent("Backend API connection successful.");
+}catch(error){
+box.textContent="Connection failed: "+error.message+
+"\nCheck that Colab and the ngrok tunnel are running.";
+document.getElementById("systemStatus").textContent="Browser system ready; API offline";
+document.getElementById("systemStatus").className="red";
+addEvent("Backend API connection failed.");
+}
+}
+
+async function findEmergencyRoute(){
+const box=document.getElementById("apiRouteResult");
+const start=document.getElementById("routeStart").value;
+const end=document.getElementById("routeEnd").value;
+box.textContent="Requesting route from backend...";
+
+try{
+const url=getApiUrl()+"/route?source="+encodeURIComponent(start)+
+"&destination="+encodeURIComponent(end);
+const response=await fetch(url,{
+headers:{"ngrok-skip-browser-warning":"true"}
+});
+if(!response.ok)throw new Error("HTTP "+response.status);
+const data=await response.json();
+box.textContent=JSON.stringify(data,null,2);
+addEvent("Backend route requested from "+start+" to "+end+".");
+}catch(error){
+box.textContent="Route request failed: "+error.message+
+"\nCheck your backend and current ngrok URL.";
+addEvent("Backend route request failed.");
+}
+}
+
+function setupLocationSelects(){
+["routeStart","routeEnd"].forEach(id=>{
+const select=document.getElementById(id);
+select.innerHTML="";
+names.forEach(name=>{
+const option=document.createElement("option");
+option.value=name;
+option.textContent=name;
+select.appendChild(option);
+});
+});
+document.getElementById("routeStart").value="Hospital";
+document.getElementById("routeEnd").value="Affected Village";
+}
+
+loadData();
+setupLocationSelects();
+updateDashboard();
+renderEvents();
+document.getElementById("systemStatus").textContent="Browser system ready";
+document.getElementById("systemStatus").className="green";
+</script>
+</body>
+  </html>
