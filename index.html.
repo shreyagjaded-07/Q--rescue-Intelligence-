@@ -548,6 +548,169 @@ function sendMessage(){
 resetLinks();
 updateDashboard();
 </script>
+<!-- Q-RESCUE INDIA MAP -->
+
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
+
+<style>
+  #india-rescue-map {
+    width: 100%;
+    height: 450px;
+    border-radius: 12px;
+    border: 2px solid #2563eb;
+    margin-top: 15px;
+  }
+
+  .india-map-section {
+    margin: 20px;
+    padding: 15px;
+    background: #ffffff;
+    border-radius: 15px;
+    color: #111827;
+  }
+
+  .india-map-section h2 {
+    margin-bottom: 8px;
+  }
+
+  .india-map-status {
+    padding: 10px;
+    margin-bottom: 10px;
+    background: #fff7ed;
+    color: #9a3412;
+    border-radius: 8px;
+    font-size: 14px;
+  }
+</style>
+
+<section class="india-map-section">
+
+  <h2>🇮🇳 Q-Rescue India Disaster Map</h2>
+
+  <p>
+    Explore Indian cities and disaster demonstration locations.
+  </p>
+
+  <div class="india-map-status">
+    DEMO MODE: Disaster markers are examples.
+    Live official disaster alerts are not connected.
+  </div>
+
+  <div id="india-rescue-map"></div>
+
+</section>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+  // Create the India map
+  const indiaMap = L.map("india-rescue-map").setView(
+    [22.9734, 78.6569],
+    5
+  );
+
+  // Add OpenStreetMap
+  L.tileLayer(
+    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    {
+      attribution: "&copy; OpenStreetMap contributors",
+      maxZoom: 19
+    }
+  ).addTo(indiaMap);
+
+  // Indian city locations
+  const indiaCities = [
+    {
+      name: "Belagavi, Karnataka",
+      lat: 15.8497,
+      lng: 74.4977
+    },
+    {
+      name: "Mumbai, Maharashtra",
+      lat: 19.0760,
+      lng: 72.8777
+    },
+    {
+      name: "Chennai, Tamil Nadu",
+      lat: 13.0827,
+      lng: 80.2707
+    },
+    {
+      name: "Kolkata, West Bengal",
+      lat: 22.5726,
+      lng: 88.3639
+    },
+    {
+      name: "Delhi",
+      lat: 28.6139,
+      lng: 77.2090
+    },
+    {
+      name: "Guwahati, Assam",
+      lat: 26.1445,
+      lng: 91.7362
+    }
+  ];
+
+  // Add city markers
+  indiaCities.forEach(function(city) {
+
+    L.marker([city.lat, city.lng])
+      .addTo(indiaMap)
+      .bindPopup(
+        "<b>" + city.name + "</b><br>" +
+        "Indian city location"
+      );
+
+  });
+
+  // DEMONSTRATION HAZARDS ONLY
+  // These are NOT current disaster reports.
+
+  const demoHazards = [
+    {
+      name: "Demo Flood Marker",
+      lat: 19.0760,
+      lng: 72.8777
+    },
+    {
+      name: "Demo Cyclone Marker",
+      lat: 13.0827,
+      lng: 80.2707
+    },
+    {
+      name: "Demo Landslide Marker",
+      lat: 26.1445,
+      lng: 91.7362
+    }
+  ];
+
+  // Add demonstration hazard markers
+  demoHazards.forEach(function(hazard) {
+
+    L.circleMarker(
+      [hazard.lat, hazard.lng],
+      {
+        radius: 10,
+        color: "#dc2626",
+        fillColor: "#ef4444",
+        fillOpacity: 0.8
+      }
+    )
+      .addTo(indiaMap)
+      .bindPopup(
+        "<b>" + hazard.name + "</b><br>" +
+        "SIMULATED: Not a real disaster alert."
+      );
+
+  });
+
+</script>
+
+<!-- END Q-RESCUE INDIA MAP -->
 
 </body>
 </html>
